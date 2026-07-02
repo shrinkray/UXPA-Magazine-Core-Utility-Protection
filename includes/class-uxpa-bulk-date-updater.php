@@ -70,7 +70,7 @@ class UXPA_Bulk_Date_Updater {
             if ( $subtab === 'comments' ) {
                 $settings_saved = $this->handle_comments_update();
             } else {
-                $field = isset( $_POST['field'] ) ? sanitize_key( $_POST['field'] ) : 'modified';
+                $field = isset( $_POST['field'] ) ? sanitize_key( wp_unslash( $_POST['field'] ) ) : 'modified';
                 if ( $field !== 'date_both' ) {
                     $field = ( $field === 'published' ) ? 'post_date' : 'post_modified';
                 }

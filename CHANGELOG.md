@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.12] - 2026-07-02
+
+### Fixed
+- Unslashed the $_POST['field'] input parameter inside the bulk date updater submit handler before sanitizing with sanitize_key().
+
 ## [1.1.11] - 2026-07-02
 
 ### Fixed

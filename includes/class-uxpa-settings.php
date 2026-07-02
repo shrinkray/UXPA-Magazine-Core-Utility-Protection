@@ -273,6 +273,10 @@ class UXPA_Settings {
                         <option value="terms"><?php esc_html_e( 'Count Child Terms (terms)', 'uxpa-core-utility' ); ?></option>
                         <option value="post"><?php esc_html_e( 'Count Associated Posts (post)', 'uxpa-core-utility' ); ?></option>
                     </select>
+                    <p id="sc_count_type_warning" style="color: #d63638; display: none; margin-top: 5px; max-width: 600px;">
+                        <strong><?php esc_html_e( 'Performance Warning:', 'uxpa-core-utility' ); ?></strong>
+                        <?php esc_html_e( 'Counting associated posts executes a database query per term. On large sites with many terms, this can slow down page loading times significantly.', 'uxpa-core-utility' ); ?>
+                    </p>
                 </td>
             </tr>
             <tr>
@@ -315,8 +319,14 @@ class UXPA_Settings {
 
                     if (showCount) {
                         $('#sc_count_type_row').show();
+                        if (countType === 'post') {
+                            $('#sc_count_type_warning').show();
+                        } else {
+                            $('#sc_count_type_warning').hide();
+                        }
                     } else {
                         $('#sc_count_type_row').hide();
+                        $('#sc_count_type_warning').hide();
                     }
 
                     var shortcode = '[taxonomy_list';
@@ -343,13 +353,23 @@ class UXPA_Settings {
                     }
 
                     if (include) {
-                        include = include.replace(/\s*,\s*/g, ',');
-                        shortcode += ' include="' + include + '"';
+                        // Keep only digits and commas
+                        include = include.replace(/[^0-9,]/g, '');
+                        // Remove duplicate adjacent commas
+                        include = include.replace(/,+/g, ',').replace(/^,|,$/g, '');
+                        if (include) {
+                            shortcode += ' include="' + include + '"';
+                        }
                     }
 
                     if (exclude) {
-                        exclude = exclude.replace(/\s*,\s*/g, ',');
-                        shortcode += ' exclude="' + exclude + '"';
+                        // Keep only digits and commas
+                        exclude = exclude.replace(/[^0-9,]/g, '');
+                        // Remove duplicate adjacent commas
+                        exclude = exclude.replace(/,+/g, ',').replace(/^,|,$/g, '');
+                        if (exclude) {
+                            shortcode += ' exclude="' + exclude + '"';
+                        }
                     }
 
                     shortcode += ']';

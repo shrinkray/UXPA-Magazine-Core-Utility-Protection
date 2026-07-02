@@ -53,10 +53,10 @@ class UXPA_Settings {
         // Save Term Ordering Settings
         if ( isset( $_POST['to_form_submit'] ) && isset( $_POST['to_form_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['to_form_nonce'] ) ), 'to_form_submit' ) ) {
             $options = array(
-                'show_reorder_interfaces' => isset( $_POST['show_reorder_interfaces'] ) ? array_map( 'sanitize_text_field', $_POST['show_reorder_interfaces'] ) : array(),
+                'show_reorder_interfaces' => isset( $_POST['show_reorder_interfaces'] ) ? array_map( 'sanitize_text_field', wp_unslash( $_POST['show_reorder_interfaces'] ) ) : array(),
                 'capability'              => isset( $_POST['capability'] ) ? sanitize_text_field( wp_unslash( $_POST['capability'] ) ) : 'manage_options',
-                'autosort'                => isset( $_POST['autosort'] ) ? sanitize_key( $_POST['autosort'] ) : '0',
-                'adminsort'               => isset( $_POST['adminsort'] ) ? sanitize_key( $_POST['adminsort'] ) : '0'
+                'autosort'                => isset( $_POST['autosort'] ) ? sanitize_key( wp_unslash( $_POST['autosort'] ) ) : '0',
+                'adminsort'               => isset( $_POST['adminsort'] ) ? sanitize_key( wp_unslash( $_POST['adminsort'] ) ) : '0'
             );
             update_option( 'tto_options', $options );
 

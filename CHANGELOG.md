@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.9] - 2026-07-02
+
+### Fixed
+- Unslashed $_POST input parameters for Term Ordering settings before sanitization to prevent slash mismatches.
+
 ## [1.1.8] - 2026-07-02
 
 ### Changed

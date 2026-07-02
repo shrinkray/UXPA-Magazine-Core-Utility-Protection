@@ -65,7 +65,7 @@ class UXPA_Bulk_Date_Updater {
         $now = current_time( 'timestamp', 0 );
 
         // Handle Form Submission
-        if ( isset( $_POST['tb_refresh'] ) && wp_verify_nonce( $_POST['tb_refresh'], 'tb-refresh' ) && current_user_can( 'manage_options' ) ) {
+        if ( isset( $_POST['tb_refresh'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['tb_refresh'] ) ), 'tb-refresh' ) && current_user_can( 'manage_options' ) ) {
             
             if ( $subtab === 'comments' ) {
                 $settings_saved = $this->handle_comments_update();

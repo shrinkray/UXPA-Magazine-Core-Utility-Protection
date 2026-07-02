@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.7] - 2026-07-02
+
+### Fixed
+- Unslashed and sanitized the tb_refresh $_POST nonce variable inside the bulk date updater before running wp_verify_nonce().
+
 ## [1.1.6] - 2026-07-02
 
 ### Fixed

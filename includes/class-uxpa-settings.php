@@ -228,6 +228,7 @@ class UXPA_Settings {
 
         <h3 style="margin-top: 25px;"><?php esc_html_e( 'Usage Example:', 'uxpa-core-utility' ); ?></h3>
         <pre style="background: #f4f4f4; padding: 10px; border-left: 4px solid #007cba; max-width: 800px;"><code>[taxonomy_list name="category" search_bar="1" show_count="true" count_type="post"]</code></pre>
+		<p>Replaces plugin: <strong>Taxonomy List</strong></p>
         <?php
     }
 

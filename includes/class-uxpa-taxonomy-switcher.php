@@ -274,6 +274,7 @@ class UXPA_Taxonomy_Switcher {
 
                 <?php submit_button( __( 'Switch Taxonomies', 'uxpa-core-utility' ) ); ?>
             </form>
+			<p><?php echo wp_kses_post( __( 'Replaces plugin: <strong>Taxonomy Terms Order</strong> and <strong>Categorized Posts</strong> (for post type taxonomies only)', 'uxpa-core-utility' ) ); ?></p>
         </div>
         <?php
     }

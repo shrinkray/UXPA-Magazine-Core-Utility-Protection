@@ -2,6 +2,22 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.15] - 2026-07-02
+
+### Changed
+- Added “Replaces plugin” labels across relevant admin screens to document which legacy plugins this core utility supersedes.
+ - Updated taxonomy order UI styles to improve contrast/legibility.
+
+## [1.1.14] - 2026-07-02
+
+### Changed
+- Added a helper guide paragraph above the taxonomy selector table when a post type supports multiple taxonomies.
+
+## [1.1.13] - 2026-07-02
+
+### Changed
+- Added a short descriptive usage instructions paragraph on the Taxonomy Order admin interface page.
+
 ## [1.1.12] - 2026-07-02
 
 ### Fixed

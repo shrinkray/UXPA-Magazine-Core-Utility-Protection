@@ -11,29 +11,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class UXPA_Bulk_Date_Updater {
 
-    public function __construct() {
-        add_action( 'admin_menu', array( $this, 'register_menu' ) );
-        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+    private static $instance = null;
+
+    public static function get_instance() {
+        if ( null === self::$instance ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
     }
 
-    /**
-     * Register the options page under Settings.
-     */
-    public function register_menu() {
-        add_options_page(
-            __( 'Bulk Post Update Date', 'uxpa-core-utility' ),
-            __( 'Bulk Post Update Date', 'uxpa-core-utility' ),
-            'manage_options',
-            'bulk-post-update-date',
-            array( $this, 'render_options_page' )
-        );
+    public function __construct() {
+        add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
     }
 
     /**
      * Enqueue assets only on the plugin's settings page.
      */
     public function enqueue_assets( $hook ) {
-        if ( 'settings_page_bulk-post-update-date' !== $hook ) {
+        $tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+        if ( 'settings_page_uxpa-core-utility' !== $hook || $tab !== 'date-updater' ) {
             return;
         }
 
@@ -45,12 +41,12 @@ class UXPA_Bulk_Date_Updater {
     /**
      * Render the admin page and handle submissions.
      */
-    public function render_options_page() {
+    public function render_page_content() {
         global $wpdb;
         $settings_saved = 0;
         
-        $tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'posts';
-        $type = $tab;
+        $subtab = isset( $_GET['subtab'] ) ? sanitize_key( wp_unslash( $_GET['subtab'] ) ) : 'posts';
+        $type = $subtab;
 
         // Extra Check for valid tabs
         $allowed_tabs = array( 'posts', 'pages', 'comments' );
@@ -61,20 +57,20 @@ class UXPA_Bulk_Date_Updater {
             $allowed_tabs[] = $cpt->name;
         }
 
-        if ( ! in_array( $tab, $allowed_tabs, true ) ) {
-            $tab = 'posts';
+        if ( ! in_array( $subtab, $allowed_tabs, true ) ) {
+            $subtab = 'posts';
             $type = 'posts';
         }
 
         $now = current_time( 'timestamp', 0 );
 
         // Handle Form Submission
-        if ( isset( $_POST['tb_refresh'] ) && wp_verify_nonce( $_POST['tb_refresh'], 'tb-refresh' ) && current_user_can( 'manage_options' ) ) {
+        if ( isset( $_POST['tb_refresh'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['tb_refresh'] ) ), 'tb-refresh' ) && current_user_can( 'manage_options' ) ) {
             
-            if ( $tab === 'comments' ) {
+            if ( $subtab === 'comments' ) {
                 $settings_saved = $this->handle_comments_update();
             } else {
-                $field = isset( $_POST['field'] ) ? sanitize_key( $_POST['field'] ) : 'modified';
+                $field = isset( $_POST['field'] ) ? sanitize_key( wp_unslash( $_POST['field'] ) ) : 'modified';
                 if ( $field !== 'date_both' ) {
                     $field = ( $field === 'published' ) ? 'post_date' : 'post_modified';
                 }
@@ -169,8 +165,8 @@ class UXPA_Bulk_Date_Updater {
         }
 
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e( 'Bulk Post Update Date', 'uxpa-core-utility' ); ?></h1>
+        <div class="bulk-date-updater-settings">
+            <h2><?php esc_html_e( 'Bulk Post Update Date', 'uxpa-core-utility' ); ?></h2>
             <p><?php esc_html_e( 'Change the Post Update date for all posts in one click. This will help your blog in search engines and your blog will look alive. Do this every week or month.', 'uxpa-core-utility' ); ?></p>
             
             <?php if ( $settings_saved > 0 ) : ?>
@@ -180,10 +176,10 @@ class UXPA_Bulk_Date_Updater {
             <?php endif; ?>
 
             <h2 class="nav-tab-wrapper">
-                <a href="?page=bulk-post-update-date&tab=posts" class="nav-tab <?php echo $tab === 'posts' ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=uxpa-core-utility&tab=date-updater&subtab=posts" class="nav-tab <?php echo $subtab === 'posts' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-admin-post" style="margin-top: 4px;"></span> <?php esc_html_e( 'Posts', 'uxpa-core-utility' ); ?>
                 </a>
-                <a href="?page=bulk-post-update-date&tab=pages" class="nav-tab <?php echo $tab === 'pages' ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=uxpa-core-utility&tab=date-updater&subtab=pages" class="nav-tab <?php echo $subtab === 'pages' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-admin-page" style="margin-top: 4px;"></span> <?php esc_html_e( 'Pages', 'uxpa-core-utility' ); ?>
                 </a>
                 
@@ -191,7 +187,7 @@ class UXPA_Bulk_Date_Updater {
                 if ( $custom_post_types ) {
                     foreach ( $custom_post_types as $post_type ) {
                         ?>
-                        <a href="?page=bulk-post-update-date&tab=<?php echo esc_attr( $post_type->name ); ?>" class="nav-tab <?php echo $tab === $post_type->name ? 'nav-tab-active' : ''; ?>">
+                        <a href="?page=uxpa-core-utility&tab=date-updater&subtab=<?php echo esc_attr( $post_type->name ); ?>" class="nav-tab <?php echo $subtab === $post_type->name ? 'nav-tab-active' : ''; ?>">
                             <?php if ( strpos( $post_type->menu_icon, 'dashicons' ) !== false ) : ?>
                                 <span class="dashicons <?php echo esc_attr( $post_type->menu_icon ); ?>" style="margin-top: 4px;"></span>
                             <?php endif; ?>
@@ -201,12 +197,12 @@ class UXPA_Bulk_Date_Updater {
                     }
                 }
                 ?>
-                <a href="?page=bulk-post-update-date&tab=comments" class="nav-tab <?php echo $tab === 'comments' ? 'nav-tab-active' : ''; ?>">
+                <a href="?page=uxpa-core-utility&tab=date-updater&subtab=comments" class="nav-tab <?php echo $subtab === 'comments' ? 'nav-tab-active' : ''; ?>">
                     <span class="dashicons dashicons-admin-comments" style="margin-top: 4px;"></span> <?php esc_html_e( 'Post Comments', 'uxpa-core-utility' ); ?>
                 </a>
             </h2>
 
-            <form method="post" action="">
+            <form method="post" action="?page=uxpa-core-utility&tab=date-updater&subtab=<?php echo esc_attr( $subtab ); ?>">
                 <table class="form-table">
                     <tr valign="top">
                         <th scope="row"><label for="distribute"><?php esc_html_e( 'Distribute into Last', 'uxpa-core-utility' ); ?></label></th>
@@ -235,7 +231,7 @@ class UXPA_Bulk_Date_Updater {
 
                     <?php
                     // Tab-specific filters
-                    if ( $tab === 'posts' ) {
+                    if ( $subtab === 'posts' ) {
                         ?>
                         <tr valign="top">
                             <th scope="row"><label for="categories"><?php esc_html_e( 'Select Categories', 'uxpa-core-utility' ); ?></label></th>
@@ -271,7 +267,7 @@ class UXPA_Bulk_Date_Updater {
                             </tr>
                             <?php
                         }
-                    } else if ( $tab === 'pages' ) {
+                    } else if ( $subtab === 'pages' ) {
                         ?>
                         <tr valign="top">
                             <th scope="row"><label for="pages"><?php esc_html_e( 'Select Pages', 'uxpa-core-utility' ); ?></label></th>
@@ -288,12 +284,12 @@ class UXPA_Bulk_Date_Updater {
                             </td>
                         </tr>
                         <?php
-                    } else if ( $tab !== 'comments' ) {
+                    } else if ( $subtab !== 'comments' ) {
                         // Custom post types
                         $tax_args = array(
-                            'public'      => $tab === 'web-story' ? false : true,
+                            'public'      => $subtab === 'web-story' ? false : true,
                             '_builtin'    => false,
-                            'object_type' => array( $tab )
+                            'object_type' => array( $subtab )
                         );
                         $taxonomies = get_taxonomies( $tax_args, 'objects' );
 
@@ -337,7 +333,7 @@ class UXPA_Bulk_Date_Updater {
                         }
                     }
 
-                    if ( $tab !== 'comments' ) {
+                    if ( $subtab !== 'comments' ) {
                         ?>
                         <tr id="field_row" valign="top">
                             <th scope="row"><label><?php esc_html_e( 'Date field to update', 'uxpa-core-utility' ); ?></label></th>

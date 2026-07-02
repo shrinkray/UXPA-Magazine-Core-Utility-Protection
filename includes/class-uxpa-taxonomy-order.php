@@ -11,6 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class UXPA_Taxonomy_Order {
 
+    private static $instance = null;
+
+    public static function get_instance() {
+        if ( null === self::$instance ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     public function __construct() {
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'admin_menu', array( $this, 'admin_menu' ), 99 );
@@ -53,7 +62,10 @@ class UXPA_Taxonomy_Order {
      * Enqueue CSS and JS assets.
      */
     public function admin_enqueue_scripts( $hook ) {
-        if ( strpos( $hook, 'to-interface' ) === false && strpos( $hook, 'settings_page_to-options' ) === false ) {
+        $tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+        $is_term_ordering_tab = ( 'settings_page_uxpa-core-utility' === $hook && ( empty( $tab ) || 'term-ordering' === $tab ) );
+
+        if ( strpos( $hook, 'to-interface' ) === false && ! $is_term_ordering_tab ) {
             return;
         }
 
@@ -63,19 +75,7 @@ class UXPA_Taxonomy_Order {
         wp_enqueue_script( 'uxpa-to-js', plugins_url( '../assets/js/taxonomy-order.js', __FILE__ ), array( 'jquery', 'jquery-ui-sortable' ), '1.0', false );
     }
 
-    /**
-     * Register submenus and options page.
-     */
     public function admin_menu() {
-        // Register General Settings page under Settings
-        add_options_page(
-            __( 'Taxonomy Terms Order', 'uxpa-core-utility' ),
-            __( 'Taxonomy Terms Order', 'uxpa-core-utility' ),
-            'manage_options',
-            'to-options',
-            array( $this, 'render_options_page' )
-        );
-
         $options = $this->get_settings();
         $capability = ! empty( $options['capability'] ) ? $options['capability'] : 'manage_options';
 
@@ -318,7 +318,7 @@ class UXPA_Taxonomy_Order {
             foreach ( $unserialised_data as $key => $values ) {
                 $items = explode( "&", $values );
                 foreach ( $items as $item_key => $item_ ) {
-                    $items[ $item_key ] = trim( str_replace( "item[]=", "", $item__ ) );
+                    $items[ $item_key ] = trim( str_replace( "item[]=", "", $item_ ) );
                 }
 
                 if ( is_array( $items ) && count( $items ) > 0 ) {
@@ -395,24 +395,10 @@ class UXPA_Taxonomy_Order {
         return $orderby;
     }
 
-    /**
-     * Render general settings page.
-     */
-    public function render_options_page() {
+    public function render_options_page_content() {
         $options = $this->get_settings();
-
-        if ( isset( $_POST['to_form_submit'] ) && isset( $_POST['to_form_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['to_form_nonce'] ) ), 'to_form_submit' ) ) {
-            $options['show_reorder_interfaces'] = isset( $_POST['show_reorder_interfaces'] ) ? array_map( 'sanitize_text_field', $_POST['show_reorder_interfaces'] ) : array();
-            $options['capability'] = isset( $_POST['capability'] ) ? sanitize_text_field( wp_unslash( $_POST['capability'] ) ) : 'manage_options';
-            $options['autosort'] = isset( $_POST['autosort'] ) ? sanitize_key( $_POST['autosort'] ) : '0';
-            $options['adminsort'] = isset( $_POST['adminsort'] ) ? sanitize_key( $_POST['adminsort'] ) : '0';
-
-            update_option( 'tto_options', $options );
-            echo '<div class="updated fade"><p>' . esc_html__( 'Settings Saved', 'uxpa-core-utility' ) . '</p></div>';
-        }
-
         ?>
-        <div class="wrap">
+        <div class="taxonomy-terms-order-settings">
             <h2><?php esc_html_e( 'Taxonomy Terms Order - Settings', 'uxpa-core-utility' ); ?></h2>
             <form id="form_data" method="post" action="">
                 <?php wp_nonce_field( 'to_form_submit', 'to_form_nonce' ); ?>

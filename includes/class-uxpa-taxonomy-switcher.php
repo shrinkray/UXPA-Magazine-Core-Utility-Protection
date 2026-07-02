@@ -11,10 +11,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class UXPA_Taxonomy_Switcher {
 
+    private static $instance = null;
+
+    public static function get_instance() {
+        if ( null === self::$instance ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     private $notices = array();
 
     public function __construct() {
-        add_action( 'admin_menu', array( $this, 'add_page' ) );
         add_action( 'admin_init', array( $this, 'handle_switcher_action' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
         add_action( 'wp_ajax_taxonomy_switcher_search_term_handler', array( $this, 'ajax_term_results' ) );
@@ -24,7 +32,8 @@ class UXPA_Taxonomy_Switcher {
      * Enqueue JS for Taxonomy Switcher and pass taxonomy metadata inline.
      */
     public function enqueue_assets( $hook ) {
-        if ( 'tools_page_taxonomy-switcher' !== $hook ) {
+        $tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+        if ( 'settings_page_uxpa-core-utility' !== $hook || $tab !== 'term-switcher' ) {
             return;
         }
 
@@ -46,18 +55,7 @@ class UXPA_Taxonomy_Switcher {
         );
     }
 
-    /**
-     * Add the page under Tools.
-     */
-    public function add_page() {
-        add_management_page(
-            __( 'Taxonomy Switcher', 'uxpa-core-utility' ),
-            __( 'Taxonomy Switcher', 'uxpa-core-utility' ),
-            'manage_options',
-            'taxonomy-switcher',
-            array( $this, 'render_page' )
-        );
-    }
+    // add_page removed since page is consolidated
 
     /**
      * Handle AJAX term searches for limit-by-parent feature.
@@ -147,7 +145,7 @@ class UXPA_Taxonomy_Switcher {
         if ( empty( $term_ids ) || is_wp_error( $term_ids ) ) {
             $this->notices[] = __( 'No terms to be switched. Check if the term exists in your "from" taxonomy.', 'uxpa-core-utility' );
             set_transient( 'uxpa_taxonomy_switcher_notices', $this->notices, 45 );
-            wp_redirect( esc_url_raw( add_query_arg( array( 'page' => 'taxonomy-switcher' ), admin_url( 'tools.php' ) ) ) );
+            wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) ) );
             exit;
         }
 
@@ -201,14 +199,14 @@ class UXPA_Taxonomy_Switcher {
         $this->notices[] = sprintf( __( 'Taxonomies switched for %s!', 'uxpa-core-utility' ), $count_name );
 
         set_transient( 'uxpa_taxonomy_switcher_notices', $this->notices, 45 );
-        wp_redirect( esc_url_raw( add_query_arg( array( 'page' => 'taxonomy-switcher' ), admin_url( 'tools.php' ) ) ) );
+        wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) ) );
         exit;
     }
 
     /**
-     * Render the admin management interface page.
+     * Render the admin switcher interface page content.
      */
-    public function render_page() {
+    public function render_page_content() {
         $registered_taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
         $transient_notices = get_transient( 'uxpa_taxonomy_switcher_notices' );
         if ( $transient_notices ) {
@@ -220,12 +218,13 @@ class UXPA_Taxonomy_Switcher {
             <?php
         }
         ?>
-        <div id="wds-taxonomy-switcher" class="wrap taxonomy-switcher">
+        <div id="wds-taxonomy-switcher" class="taxonomy-switcher-content">
             <h2><?php esc_html_e( 'Taxonomy Switcher', 'uxpa-core-utility' ); ?></h2>
 
-            <form method="get" action="">
+            <form method="get" action="<?php echo esc_url( admin_url( 'options-general.php' ) ); ?>">
+                <input type="hidden" name="page" value="uxpa-core-utility" />
+                <input type="hidden" name="tab" value="term-switcher" />
                 <input type="hidden" name="taxonomy_switcher" value="1" />
-                <input type="hidden" name="page" value="taxonomy-switcher" />
                 <input type="hidden" id="taxonomy_switcher_nonce" name="taxonomy_switcher_nonce" value="<?php echo esc_attr( wp_create_nonce( 'taxonomy-switcher-action' ) ); ?>" />
                 <input type="hidden" id="taxonomy_switcher_ajax_nonce" name="nonce" value="<?php echo esc_attr( wp_create_nonce( 'taxonomy-switcher-ajax-nonce' ) ); ?>" />
 

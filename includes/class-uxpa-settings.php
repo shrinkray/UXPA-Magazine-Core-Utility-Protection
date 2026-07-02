@@ -111,13 +111,13 @@ class UXPA_Settings {
                             break;
                         case 'term-switcher':
                             if ( class_exists( 'UXPA_Taxonomy_Switcher' ) ) {
-                                $switcher = new UXPA_Taxonomy_Switcher();
+                                $switcher = UXPA_Taxonomy_Switcher::get_instance();
                                 $switcher->render_page_content();
                             }
                             break;
                         case 'date-updater':
                             if ( class_exists( 'UXPA_Bulk_Date_Updater' ) ) {
-                                $updater = new UXPA_Bulk_Date_Updater();
+                                $updater = UXPA_Bulk_Date_Updater::get_instance();
                                 $updater->render_page_content();
                             }
                             break;
@@ -166,7 +166,7 @@ class UXPA_Settings {
      */
     private function render_term_ordering_tab() {
         if ( class_exists( 'UXPA_Taxonomy_Order' ) ) {
-            $ordering = new UXPA_Taxonomy_Order();
+            $ordering = UXPA_Taxonomy_Order::get_instance();
             $ordering->render_options_page_content();
         }
     }

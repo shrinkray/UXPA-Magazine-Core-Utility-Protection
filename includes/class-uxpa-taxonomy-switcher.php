@@ -11,6 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class UXPA_Taxonomy_Switcher {
 
+    private static $instance = null;
+
+    public static function get_instance() {
+        if ( null === self::$instance ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     private $notices = array();
 
     public function __construct() {

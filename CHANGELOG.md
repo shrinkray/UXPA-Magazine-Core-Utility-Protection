@@ -2,6 +2,16 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.5] - 2026-07-02
+
+### Fixed
+- Fixed typo in term ordering AJAX handler where `$item__` was referenced instead of loop variable `$item_`.
+
+## [1.1.4] - 2026-07-02
+
+### Fixed
+- Implemented Singleton pattern via get_instance() for utility classes to prevent duplicate instantiation and redundant action hook registration.
+
 ## [1.1.3] - 2026-07-02
 
 ### Fixed

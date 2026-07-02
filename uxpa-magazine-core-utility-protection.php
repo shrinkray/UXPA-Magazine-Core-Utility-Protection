@@ -30,9 +30,9 @@ add_action( 'plugins_loaded', 'uxpa_core_utility_init' );
 function uxpa_core_utility_init() {
     new UXPA_Settings();
     new UXPA_Firewall();
-    new UXPA_Bulk_Date_Updater();
-    new UXPA_Taxonomy_Order();
-    new UXPA_Taxonomy_Switcher();
+    UXPA_Bulk_Date_Updater::get_instance();
+    UXPA_Taxonomy_Order::get_instance();
+    UXPA_Taxonomy_Switcher::get_instance();
     new UXPA_Taxonomy_List();
 }
 

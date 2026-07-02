@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.2.1] - 2026-07-02
+
+### Fixed
+- Localized the hardcoded input placeholder strings in the shortcode generator form to support full internationalization.
+
 ## [1.2.0] - 2026-07-02
 
 ### Added

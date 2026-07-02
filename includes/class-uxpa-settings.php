@@ -278,14 +278,14 @@ class UXPA_Settings {
             <tr>
                 <th scope="row"><label for="sc_include"><?php esc_html_e( 'Limit to Term IDs (include)', 'uxpa-core-utility' ); ?></label></th>
                 <td>
-                    <input type="text" id="sc_include" placeholder="e.g. 12, 15, 23" class="regular-text" />
+                    <input type="text" id="sc_include" placeholder="<?php echo esc_attr_x( 'e.g. 12, 15, 23', 'shortcode include placeholder', 'uxpa-core-utility' ); ?>" class="regular-text" />
                     <span class="description"><?php esc_html_e( 'Comma-separated IDs of terms to show (leave empty for all).', 'uxpa-core-utility' ); ?></span>
                 </td>
             </tr>
             <tr>
                 <th scope="row"><label for="sc_exclude"><?php esc_html_e( 'Exclude Term IDs (exclude)', 'uxpa-core-utility' ); ?></label></th>
                 <td>
-                    <input type="text" id="sc_exclude" placeholder="e.g. 3, 5, 8" class="regular-text" />
+                    <input type="text" id="sc_exclude" placeholder="<?php echo esc_attr_x( 'e.g. 3, 5, 8', 'shortcode exclude placeholder', 'uxpa-core-utility' ); ?>" class="regular-text" />
                     <span class="description"><?php esc_html_e( 'Comma-separated IDs of terms to hide.', 'uxpa-core-utility' ); ?></span>
                 </td>
             </tr>

@@ -136,7 +136,8 @@ class UXPA_Taxonomy_Order {
 
         ?>
         <div class="wrap">
-            <h2><?php esc_html_e( 'Taxonomy Order', 'uxpa-core-utility' ); ?></h2>
+            <h2><?php esc_html_e( 'Taxonomy Order - UXPA Core Utility', 'uxpa-core-utility' ); ?></h2>
+            <p><?php esc_html_e( 'Drag and drop the taxonomy terms below to rearrange their ordering. The new order will automatically apply on the frontend and administrative screens (unless configured otherwise). Use the taxonomy dropdown selector below if this post type supports multiple taxonomies.', 'uxpa-core-utility' ); ?></p>
             <div id="ajax-response"></div>
 
             <noscript>
@@ -172,6 +173,7 @@ class UXPA_Taxonomy_Order {
                 if ( count( $post_type_taxonomies ) > 1 ) {
                     ?>
                     <h2 class="subtitle"><?php echo esc_html( ucfirst( $post_type_data->labels->name ) ); ?> <?php esc_html_e( 'Taxonomies', 'uxpa-core-utility' ); ?></h2>
+                    <p class="description" style="margin-bottom: 10px; max-width: 800px;"><?php esc_html_e( 'This post type has multiple taxonomies. Select a taxonomy using the radio button below to load and sort its terms independently. Ordering terms in one taxonomy does not affect any others.', 'uxpa-core-utility' ); ?></p>
                     <table cellspacing="0" class="wp-list-taxonomy">
                         <thead>
                             <tr>
@@ -480,6 +482,7 @@ class UXPA_Taxonomy_Order {
                     <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e( 'Save Settings', 'uxpa-core-utility' ); ?>" />
                 </p>
             </form>
+			<p>Replaces plugin: <strong>Taxonomy Terms Order</strong> and <strong>Categorized Posts</strong> (for custom post type taxonomies only)</p>
         </div>
         <?php
     }

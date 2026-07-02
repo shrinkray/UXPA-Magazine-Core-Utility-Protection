@@ -2,6 +2,21 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.1] - 2026-07-02
+
+### Changed
+- Reordered settings tabs, moving the Bot Firewall tab to the end of the list.
+- Changed default active tab to Term Ordering.
+
+## [1.1.0] - 2026-07-02
+
+### Added
+- Created a unified settings page under **Settings > UXPA Core Utility**.
+- Added 5 settings tabs: Bot Firewall, Term Ordering, Term Switcher, Bulk Date Updater, and Shortcode Info.
+- Implemented automatic redirects for old plugin settings URLs to point directly to their new tabs on the unified settings page.
+- Renamed and refactored individual module render methods to integrate with the tabbed layout.
+- Added parameter sanitization and security checks for the unified settings controller.
+
 ## [1.0.0] - 2026-07-02
 
 ### Added

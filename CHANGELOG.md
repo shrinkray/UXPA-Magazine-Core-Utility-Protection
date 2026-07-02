@@ -2,6 +2,22 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.2.2] - 2026-07-02
+
+### Changed
+- Sanitized `include` and `exclude` inputs to permit only digits and commas, preventing syntax breakages in compiled shortcodes.
+- Added a performance warning when selecting the `count_type="post"` option in the generator UI to alert users of potential slow page loads on large sites.
+
+## [1.2.1] - 2026-07-02
+
+### Fixed
+- Localized the hardcoded input placeholder strings in the shortcode generator form to support full internationalization.
+
+## [1.2.0] - 2026-07-02
+
+### Added
+- Added an interactive shortcode generator widget on the Shortcode Info tab to dynamically generate and copy `[taxonomy_list]` shortcodes.
+
 ## [1.1.15] - 2026-07-02
 
 ### Changed

@@ -226,9 +226,167 @@ class UXPA_Settings {
             </tbody>
         </table>
 
-        <h3 style="margin-top: 25px;"><?php esc_html_e( 'Usage Example:', 'uxpa-core-utility' ); ?></h3>
-        <pre style="background: #f4f4f4; padding: 10px; border-left: 4px solid #007cba; max-width: 800px;"><code>[taxonomy_list name="category" search_bar="1" show_count="true" count_type="post"]</code></pre>
-		<p>Replaces plugin: <strong>Taxonomy List</strong></p>
+        <?php
+        $taxonomies = get_taxonomies( array( 'public' => true ), 'objects' );
+        ?>
+        <h3 style="margin-top: 30px;"><?php esc_html_e( 'Interactive Shortcode Generator', 'uxpa-core-utility' ); ?></h3>
+        <p><?php esc_html_e( 'Configure options below to generate a customized shortcode for copy-pasting into your pages.', 'uxpa-core-utility' ); ?></p>
+        
+        <table class="form-table" style="max-width: 800px;">
+            <tr>
+                <th scope="row"><label for="sc_tax_name"><?php esc_html_e( 'Taxonomy Name (name)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <select id="sc_tax_name">
+                        <?php foreach ( $taxonomies as $tax ) : ?>
+                            <option value="<?php echo esc_attr( $tax->name ); ?>" <?php selected( $tax->name, 'category' ); ?>>
+                                <?php echo esc_html( $tax->label ) . ' (' . esc_html( $tax->name ) . ')'; ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="sc_hide_empty"><?php esc_html_e( 'Hide Empty Terms (hide_empty)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <input type="checkbox" id="sc_hide_empty" value="true" />
+                    <span class="description"><?php esc_html_e( 'Hide terms that do not contain any posts.', 'uxpa-core-utility' ); ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="sc_search_bar"><?php esc_html_e( 'Search Filter Bar (search_bar)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <input type="checkbox" id="sc_search_bar" value="1" />
+                    <span class="description"><?php esc_html_e( 'Display a live text-search input box above the list.', 'uxpa-core-utility' ); ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="sc_show_count"><?php esc_html_e( 'Show Counts (show_count)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <input type="checkbox" id="sc_show_count" value="true" />
+                    <span class="description"><?php esc_html_e( 'Display term or associated post counts.', 'uxpa-core-utility' ); ?></span>
+                </td>
+            </tr>
+            <tr id="sc_count_type_row" style="display: none;">
+                <th scope="row"><label for="sc_count_type"><?php esc_html_e( 'Count Type (count_type)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <select id="sc_count_type">
+                        <option value="terms"><?php esc_html_e( 'Count Child Terms (terms)', 'uxpa-core-utility' ); ?></option>
+                        <option value="post"><?php esc_html_e( 'Count Associated Posts (post)', 'uxpa-core-utility' ); ?></option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="sc_include"><?php esc_html_e( 'Limit to Term IDs (include)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <input type="text" id="sc_include" placeholder="e.g. 12, 15, 23" class="regular-text" />
+                    <span class="description"><?php esc_html_e( 'Comma-separated IDs of terms to show (leave empty for all).', 'uxpa-core-utility' ); ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row"><label for="sc_exclude"><?php esc_html_e( 'Exclude Term IDs (exclude)', 'uxpa-core-utility' ); ?></label></th>
+                <td>
+                    <input type="text" id="sc_exclude" placeholder="e.g. 3, 5, 8" class="regular-text" />
+                    <span class="description"><?php esc_html_e( 'Comma-separated IDs of terms to hide.', 'uxpa-core-utility' ); ?></span>
+                </td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 20px; max-width: 800px; padding: 15px; background: #fff; border: 1px solid #c3c4c7; border-left: 4px solid #2271b1; box-shadow: 0 1px 1px rgba(0,0,0,.04); position: relative;">
+            <h4 style="margin-top: 0; font-size: 14px;"><?php esc_html_e( 'Generated Shortcode:', 'uxpa-core-utility' ); ?></h4>
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <code id="sc_output_code" style="font-size: 14px; font-family: monospace; background: #f0f0f1; padding: 6px 10px; border-radius: 4px; flex-grow: 1; border: 1px solid #dcdcde;">[taxonomy_list name="category"]</code>
+                <button type="button" id="sc_copy_btn" class="button button-secondary"><?php esc_html_e( 'Copy to Clipboard', 'uxpa-core-utility' ); ?></button>
+            </div>
+            <span id="sc_copy_status" style="position: absolute; right: 150px; bottom: 20px; color: #46b450; font-weight: bold; display: none;"><?php esc_html_e( 'Copied!', 'uxpa-core-utility' ); ?></span>
+        </div>
+
+        <p style="margin-top: 20px;"><?php echo wp_kses_post( __( 'Replaces plugin: <strong>Taxonomy List</strong>', 'uxpa-core-utility' ) ); ?></p>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                function updateShortcode() {
+                    var name = $('#sc_tax_name').val();
+                    var hideEmpty = $('#sc_hide_empty').is(':checked');
+                    var searchBar = $('#sc_search_bar').is(':checked');
+                    var showCount = $('#sc_show_count').is(':checked');
+                    var countType = $('#sc_count_type').val();
+                    var include = $('#sc_include').val().trim();
+                    var exclude = $('#sc_exclude').val().trim();
+
+                    if (showCount) {
+                        $('#sc_count_type_row').show();
+                    } else {
+                        $('#sc_count_type_row').hide();
+                    }
+
+                    var shortcode = '[taxonomy_list';
+                    
+                    if (name && name !== 'category') {
+                        shortcode += ' name="' + name + '"';
+                    } else {
+                        shortcode += ' name="category"';
+                    }
+
+                    if (hideEmpty) {
+                        shortcode += ' hide_empty="true"';
+                    }
+
+                    if (searchBar) {
+                        shortcode += ' search_bar="1"';
+                    }
+
+                    if (showCount) {
+                        shortcode += ' show_count="true"';
+                        if (countType && countType !== 'terms') {
+                            shortcode += ' count_type="' + countType + '"';
+                        }
+                    }
+
+                    if (include) {
+                        include = include.replace(/\s*,\s*/g, ',');
+                        shortcode += ' include="' + include + '"';
+                    }
+
+                    if (exclude) {
+                        exclude = exclude.replace(/\s*,\s*/g, ',');
+                        shortcode += ' exclude="' + exclude + '"';
+                    }
+
+                    shortcode += ']';
+
+                    $('#sc_output_code').text(shortcode);
+                }
+
+                // Attach events
+                $('#sc_tax_name, #sc_hide_empty, #sc_search_bar, #sc_show_count, #sc_count_type, #sc_include, #sc_exclude').on('change keyup input', updateShortcode);
+
+                // Copy to clipboard
+                $('#sc_copy_btn').on('click', function(e) {
+                    e.preventDefault();
+                    var codeText = $('#sc_output_code').text();
+                    
+                    function showStatus() {
+                        $('#sc_copy_status').fadeIn(200).delay(1500).fadeOut(200);
+                    }
+
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(codeText).then(function() {
+                            showStatus();
+                        });
+                    } else {
+                        var $temp = $('<input>');
+                        $('body').append($temp);
+                        $temp.val(codeText).select();
+                        document.execCommand('copy');
+                        $temp.remove();
+                        showStatus();
+                    }
+                });
+
+                // Run once on load
+                updateShortcode();
+            });
+        </script>
         <?php
     }
 

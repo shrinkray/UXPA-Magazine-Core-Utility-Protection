@@ -73,7 +73,7 @@ class UXPA_Settings {
      * Render settings page.
      */
     public function render_settings_page() {
-        $current_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'term-ordering';
+        $current_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'term-ordering';
         $tabs = array(
             'term-ordering'  => __( 'Term Ordering', 'uxpa-core-utility' ),
             'term-switcher'  => __( 'Term Switcher', 'uxpa-core-utility' ),

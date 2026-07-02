@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.3] - 2026-07-02
+
+### Fixed
+- Added wp_unslash() to all $_GET input parameters before sanitization to align with WordPress security guidelines and prevent mismatches.
+
 ## [1.1.2] - 2026-07-02
 
 ### Added

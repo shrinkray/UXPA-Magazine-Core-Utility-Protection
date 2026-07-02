@@ -23,7 +23,8 @@ class UXPA_Taxonomy_Switcher {
      * Enqueue JS for Taxonomy Switcher and pass taxonomy metadata inline.
      */
     public function enqueue_assets( $hook ) {
-        if ( 'settings_page_uxpa-core-utility' !== $hook || ! isset( $_GET['tab'] ) || $_GET['tab'] !== 'term-switcher' ) {
+        $tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+        if ( 'settings_page_uxpa-core-utility' !== $hook || $tab !== 'term-switcher' ) {
             return;
         }
 

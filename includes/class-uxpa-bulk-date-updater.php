@@ -19,7 +19,8 @@ class UXPA_Bulk_Date_Updater {
      * Enqueue assets only on the plugin's settings page.
      */
     public function enqueue_assets( $hook ) {
-        if ( 'settings_page_uxpa-core-utility' !== $hook || ! isset( $_GET['tab'] ) || $_GET['tab'] !== 'date-updater' ) {
+        $tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+        if ( 'settings_page_uxpa-core-utility' !== $hook || $tab !== 'date-updater' ) {
             return;
         }
 
@@ -35,7 +36,7 @@ class UXPA_Bulk_Date_Updater {
         global $wpdb;
         $settings_saved = 0;
         
-        $subtab = isset( $_GET['subtab'] ) ? sanitize_key( $_GET['subtab'] ) : 'posts';
+        $subtab = isset( $_GET['subtab'] ) ? sanitize_key( wp_unslash( $_GET['subtab'] ) ) : 'posts';
         $type = $subtab;
 
         // Extra Check for valid tabs

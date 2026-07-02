@@ -45,7 +45,7 @@ function uxpa_core_utility_redirect_old_menus() {
         return;
     }
 
-    $page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+    $page = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : '';
 
     if ( $pagenow === 'options-general.php' ) {
         if ( $page === 'to-options' ) {

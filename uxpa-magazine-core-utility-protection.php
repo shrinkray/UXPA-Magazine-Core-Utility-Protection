@@ -2,7 +2,7 @@
 /**
  * Plugin Name: UXPA Magazine Core Utility & Protection
  * Description: Consolidation of taxonomy/post utilities and high-efficiency firewall hooks.
- * Version: 1.1.9
+ * Version: 1.1.10
  * Author: Greg Miller for UXPA
  * Author URI: https://shrinkraylabs.com
  * Text Domain: uxpa-core-utility
@@ -49,18 +49,18 @@ function uxpa_core_utility_redirect_old_menus() {
 
     if ( $pagenow === 'options-general.php' ) {
         if ( $page === 'to-options' ) {
-            wp_redirect( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-ordering' ) );
+            wp_safe_redirect( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-ordering' ) );
             exit;
         }
         if ( $page === 'bulk-post-update-date' ) {
-            wp_redirect( admin_url( 'options-general.php?page=uxpa-core-utility&tab=date-updater' ) );
+            wp_safe_redirect( admin_url( 'options-general.php?page=uxpa-core-utility&tab=date-updater' ) );
             exit;
         }
     }
 
     if ( $pagenow === 'tools.php' ) {
         if ( $page === 'taxonomy-switcher' ) {
-            wp_redirect( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) );
+            wp_safe_redirect( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) );
             exit;
         }
     }

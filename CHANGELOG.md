@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.10] - 2026-07-02
+
+### Changed
+- Replaced wp_redirect() calls with wp_safe_redirect() to secure internal admin redirects and align with best practices.
+
 ## [1.1.9] - 2026-07-02
 
 ### Fixed

@@ -145,7 +145,7 @@ class UXPA_Taxonomy_Switcher {
         if ( empty( $term_ids ) || is_wp_error( $term_ids ) ) {
             $this->notices[] = __( 'No terms to be switched. Check if the term exists in your "from" taxonomy.', 'uxpa-core-utility' );
             set_transient( 'uxpa_taxonomy_switcher_notices', $this->notices, 45 );
-            wp_redirect( esc_url_raw( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) ) );
+            wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) ) );
             exit;
         }
 
@@ -199,7 +199,7 @@ class UXPA_Taxonomy_Switcher {
         $this->notices[] = sprintf( __( 'Taxonomies switched for %s!', 'uxpa-core-utility' ), $count_name );
 
         set_transient( 'uxpa_taxonomy_switcher_notices', $this->notices, 45 );
-        wp_redirect( esc_url_raw( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) ) );
+        wp_safe_redirect( esc_url_raw( admin_url( 'options-general.php?page=uxpa-core-utility&tab=term-switcher' ) ) );
         exit;
     }
 

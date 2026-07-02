@@ -11,6 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class UXPA_Taxonomy_Order {
 
+    private static $instance = null;
+
+    public static function get_instance() {
+        if ( null === self::$instance ) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
     public function __construct() {
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
         add_action( 'admin_menu', array( $this, 'admin_menu' ), 99 );
@@ -306,7 +315,7 @@ class UXPA_Taxonomy_Order {
             foreach ( $unserialised_data as $key => $values ) {
                 $items = explode( "&", $values );
                 foreach ( $items as $item_key => $item_ ) {
-                    $items[ $item_key ] = trim( str_replace( "item[]=", "", $item__ ) );
+                    $items[ $item_key ] = trim( str_replace( "item[]=", "", $item_ ) );
                 }
 
                 if ( is_array( $items ) && count( $items ) > 0 ) {

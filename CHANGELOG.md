@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.6] - 2026-07-02
+
+### Fixed
+- Hardened $_POST nonce validation checks in settings saving logic to check index existence and apply unslashing/sanitizing before verification.
+
 ## [1.1.5] - 2026-07-02
 
 ### Fixed

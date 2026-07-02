@@ -38,7 +38,7 @@ class UXPA_Settings {
         }
 
         // Save Firewall Settings
-        if ( isset( $_POST['uxpa_save_firewall'] ) && wp_verify_nonce( $_POST['uxpa_firewall_nonce'], 'uxpa-save-firewall' ) ) {
+        if ( isset( $_POST['uxpa_save_firewall'] ) && isset( $_POST['uxpa_firewall_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['uxpa_firewall_nonce'] ) ), 'uxpa-save-firewall' ) ) {
             $author_block = isset( $_POST['author_block'] ) ? '1' : '0';
             update_option( 'uxpa_firewall_author_block_enabled', $author_block );
             
@@ -51,7 +51,7 @@ class UXPA_Settings {
         }
 
         // Save Term Ordering Settings
-        if ( isset( $_POST['to_form_submit'] ) && wp_verify_nonce( $_POST['to_form_nonce'], 'to_form_submit' ) ) {
+        if ( isset( $_POST['to_form_submit'] ) && isset( $_POST['to_form_nonce'] ) && wp_verify_nonce( sanitize_key( wp_unslash( $_POST['to_form_nonce'] ) ), 'to_form_submit' ) ) {
             $options = array(
                 'show_reorder_interfaces' => isset( $_POST['show_reorder_interfaces'] ) ? array_map( 'sanitize_text_field', $_POST['show_reorder_interfaces'] ) : array(),
                 'capability'              => isset( $_POST['capability'] ) ? sanitize_text_field( wp_unslash( $_POST['capability'] ) ) : 'manage_options',

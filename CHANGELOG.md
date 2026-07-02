@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.8] - 2026-07-02
+
+### Changed
+- Updated README.md features list and unified settings tabs ordering to match current codebase layout and new consolidated locations.
+
 ## [1.1.7] - 2026-07-02
 
 ### Fixed

@@ -482,7 +482,7 @@ class UXPA_Taxonomy_Order {
                     <input type="submit" name="Submit" class="button-primary" value="<?php esc_attr_e( 'Save Settings', 'uxpa-core-utility' ); ?>" />
                 </p>
             </form>
-			<p>Replaces plugin: <strong>Taxonomy Terms Order</strong> and <strong>Categorized Posts</strong> (for custom post type taxonomies only)</p>
+			<p><?php echo wp_kses_post( __( 'Replaces plugin: <strong>Taxonomy Terms Order</strong> and <strong>Categorized Posts</strong> (for custom post type taxonomies only)', 'uxpa-core-utility' ) ); ?></p>
         </div>
         <?php
     }

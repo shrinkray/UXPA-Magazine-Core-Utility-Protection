@@ -357,7 +357,7 @@ class UXPA_Bulk_Date_Updater {
                     <input class="button-primary" name="do" type="submit" value="<?php esc_attr_e( 'Update Dates', 'uxpa-core-utility' ); ?>" />
                 </p>
             </form>
-			<p>Replaces plugin: <strong>Bulk Post Date Changer</strong></p>
+			<p><?php echo wp_kses_post( __( 'Replaces plugin: <strong>Bulk Post Date Changer</strong>', 'uxpa-core-utility' ) ); ?></p>
         </div>
 
         <script>

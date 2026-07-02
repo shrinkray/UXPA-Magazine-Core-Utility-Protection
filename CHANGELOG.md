@@ -5,7 +5,8 @@ All notable changes to the **UXPA Magazine Core Utility & Protection** plugin wi
 ## [1.1.15] - 2026-07-02
 
 ### Changed
-- Added a replaces label under the Shortcode Info tab to explicitly state it replaces the legacy Taxonomy List plugin.
+- Added “Replaces plugin” labels across relevant admin screens to document which legacy plugins this core utility supersedes.
+ - Updated taxonomy order UI styles to improve contrast/legibility.
 
 ## [1.1.14] - 2026-07-02
 

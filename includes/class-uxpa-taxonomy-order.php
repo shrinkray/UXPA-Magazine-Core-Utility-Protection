@@ -63,19 +63,7 @@ class UXPA_Taxonomy_Order {
         wp_enqueue_script( 'uxpa-to-js', plugins_url( '../assets/js/taxonomy-order.js', __FILE__ ), array( 'jquery', 'jquery-ui-sortable' ), '1.0', false );
     }
 
-    /**
-     * Register submenus and options page.
-     */
     public function admin_menu() {
-        // Register General Settings page under Settings
-        add_options_page(
-            __( 'Taxonomy Terms Order', 'uxpa-core-utility' ),
-            __( 'Taxonomy Terms Order', 'uxpa-core-utility' ),
-            'manage_options',
-            'to-options',
-            array( $this, 'render_options_page' )
-        );
-
         $options = $this->get_settings();
         $capability = ! empty( $options['capability'] ) ? $options['capability'] : 'manage_options';
 
@@ -395,24 +383,10 @@ class UXPA_Taxonomy_Order {
         return $orderby;
     }
 
-    /**
-     * Render general settings page.
-     */
-    public function render_options_page() {
+    public function render_options_page_content() {
         $options = $this->get_settings();
-
-        if ( isset( $_POST['to_form_submit'] ) && isset( $_POST['to_form_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['to_form_nonce'] ) ), 'to_form_submit' ) ) {
-            $options['show_reorder_interfaces'] = isset( $_POST['show_reorder_interfaces'] ) ? array_map( 'sanitize_text_field', $_POST['show_reorder_interfaces'] ) : array();
-            $options['capability'] = isset( $_POST['capability'] ) ? sanitize_text_field( wp_unslash( $_POST['capability'] ) ) : 'manage_options';
-            $options['autosort'] = isset( $_POST['autosort'] ) ? sanitize_key( $_POST['autosort'] ) : '0';
-            $options['adminsort'] = isset( $_POST['adminsort'] ) ? sanitize_key( $_POST['adminsort'] ) : '0';
-
-            update_option( 'tto_options', $options );
-            echo '<div class="updated fade"><p>' . esc_html__( 'Settings Saved', 'uxpa-core-utility' ) . '</p></div>';
-        }
-
         ?>
-        <div class="wrap">
+        <div class="taxonomy-terms-order-settings">
             <h2><?php esc_html_e( 'Taxonomy Terms Order - Settings', 'uxpa-core-utility' ); ?></h2>
             <form id="form_data" method="post" action="">
                 <?php wp_nonce_field( 'to_form_submit', 'to_form_nonce' ); ?>

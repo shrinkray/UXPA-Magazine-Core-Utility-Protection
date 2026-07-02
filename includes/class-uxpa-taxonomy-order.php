@@ -62,7 +62,10 @@ class UXPA_Taxonomy_Order {
      * Enqueue CSS and JS assets.
      */
     public function admin_enqueue_scripts( $hook ) {
-        if ( strpos( $hook, 'to-interface' ) === false && strpos( $hook, 'settings_page_to-options' ) === false ) {
+        $tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : '';
+        $is_term_ordering_tab = ( 'settings_page_uxpa-core-utility' === $hook && ( empty( $tab ) || 'term-ordering' === $tab ) );
+
+        if ( strpos( $hook, 'to-interface' ) === false && ! $is_term_ordering_tab ) {
             return;
         }
 

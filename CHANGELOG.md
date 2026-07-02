@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.11] - 2026-07-02
+
+### Fixed
+- Updated the admin_enqueue_scripts() hook guard inside the Taxonomy Order module to ensure assets load correctly on the new unified Term Ordering tab.
+
 ## [1.1.10] - 2026-07-02
 
 ### Changed

@@ -99,32 +99,38 @@ class UXPA_Settings {
                 ?>
             </h2>
 
-            <div class="tab-content" style="margin-top: 20px;">
-                <?php
-                switch ( $current_tab ) {
-                    case 'firewall':
-                        $this->render_firewall_tab();
-                        break;
-                    case 'term-ordering':
-                        $this->render_term_ordering_tab();
-                        break;
-                    case 'term-switcher':
-                        if ( class_exists( 'UXPA_Taxonomy_Switcher' ) ) {
-                            $switcher = new UXPA_Taxonomy_Switcher();
-                            $switcher->render_page_content();
-                        }
-                        break;
-                    case 'date-updater':
-                        if ( class_exists( 'UXPA_Bulk_Date_Updater' ) ) {
-                            $updater = new UXPA_Bulk_Date_Updater();
-                            $updater->render_page_content();
-                        }
-                        break;
-                    case 'shortcode-info':
-                        $this->render_shortcode_info_tab();
-                        break;
-                }
-                ?>
+            <div class="settings-container-two-columns" style="display: flex; gap: 30px; margin-top: 20px; align-items: flex-start;">
+                <div class="main-settings-content" style="flex: 3; min-width: 0;">
+                    <?php
+                    switch ( $current_tab ) {
+                        case 'firewall':
+                            $this->render_firewall_tab();
+                            break;
+                        case 'term-ordering':
+                            $this->render_term_ordering_tab();
+                            break;
+                        case 'term-switcher':
+                            if ( class_exists( 'UXPA_Taxonomy_Switcher' ) ) {
+                                $switcher = new UXPA_Taxonomy_Switcher();
+                                $switcher->render_page_content();
+                            }
+                            break;
+                        case 'date-updater':
+                            if ( class_exists( 'UXPA_Bulk_Date_Updater' ) ) {
+                                $updater = new UXPA_Bulk_Date_Updater();
+                                $updater->render_page_content();
+                            }
+                            break;
+                        case 'shortcode-info':
+                            $this->render_shortcode_info_tab();
+                            break;
+                    }
+                    ?>
+                </div>
+
+                <div class="sidebar-settings-guide" style="flex: 1; min-width: 280px; max-width: 360px; background: #fff; border: 1px solid #ccd0d4; padding: 20px; border-radius: 4px; box-shadow: 0 1px 1px rgba(0,0,0,.04); box-sizing: border-box;">
+                    <?php $this->render_sidebar_guide( $current_tab ); ?>
+                </div>
             </div>
         </div>
         <?php
@@ -223,5 +229,98 @@ class UXPA_Settings {
         <h3 style="margin-top: 25px;"><?php esc_html_e( 'Usage Example:', 'uxpa-core-utility' ); ?></h3>
         <pre style="background: #f4f4f4; padding: 10px; border-left: 4px solid #007cba; max-width: 800px;"><code>[taxonomy_list name="category" search_bar="1" show_count="true" count_type="post"]</code></pre>
         <?php
+    }
+
+    /**
+     * Render sidebar guide for the current active tab.
+     */
+    private function render_sidebar_guide( $tab ) {
+        switch ( $tab ) {
+            case 'term-ordering':
+                ?>
+                <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <span class="dashicons dashicons-editor-ol" style="vertical-align: text-bottom; margin-right: 4px;"></span>
+                    <?php esc_html_e( 'Term Ordering Guide', 'uxpa-core-utility' ); ?>
+                </h3>
+                <p><strong><?php esc_html_e( 'Why sort terms?', 'uxpa-core-utility' ); ?></strong></p>
+                <p><?php esc_html_e( 'By default, WordPress queries sort terms alphabetically. Custom sorting lets you define the exact sequence of categories or tags on your frontend (e.g., ordering post sections on your home page).', 'uxpa-core-utility' ); ?></p>
+                <p><strong><?php esc_html_e( 'Tips:', 'uxpa-core-utility' ); ?></strong></p>
+                <ul style="list-style-type: disc; padding-left: 20px; margin: 10px 0;">
+                    <li><?php esc_html_e( 'Keep Auto Sort enabled to apply this order automatically across all theme queries.', 'uxpa-core-utility' ); ?></li>
+                    <li><?php esc_html_e( 'Use Admin Sort to see your custom order reflected inside the WP Admin taxonomy tables.', 'uxpa-core-utility' ); ?></li>
+                </ul>
+                <p><strong><?php esc_html_e( 'How to sort:', 'uxpa-core-utility' ); ?></strong></p>
+                <p><?php esc_html_e( 'Go to any post type menu (like Posts or Products) and select the "Taxonomy Order" option to drag and drop terms.', 'uxpa-core-utility' ); ?></p>
+                <?php
+                break;
+
+            case 'term-switcher':
+                ?>
+                <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <span class="dashicons dashicons-randomize" style="vertical-align: text-bottom; margin-right: 4px;"></span>
+                    <?php esc_html_e( 'Term Switcher Guide', 'uxpa-core-utility' ); ?>
+                </h3>
+                <p><strong><?php esc_html_e( 'When to switch?', 'uxpa-core-utility' ); ?></strong></p>
+                <p><?php esc_html_e( 'Useful when you need to merge tags into categories, reorganize post taxonomies, or clean up imported layouts from external tools.', 'uxpa-core-utility' ); ?></p>
+                <p><strong><?php esc_html_e( 'Tips:', 'uxpa-core-utility' ); ?></strong></p>
+                <ul style="list-style-type: disc; padding-left: 20px; margin: 10px 0;">
+                    <li><?php esc_html_e( 'You can input specific term IDs separated by commas to migrate selective tags only.', 'uxpa-core-utility' ); ?></li>
+                    <li><?php esc_html_e( 'Utilize the autocomplete Parent box to switch only the sub-terms of a specific parent term.', 'uxpa-core-utility' ); ?></li>
+                </ul>
+                <p style="color: #d63638; font-weight: 600;">
+                    <span class="dashicons dashicons-warning" style="vertical-align: text-bottom; font-size: 16px; width: 16px; height: 16px;"></span>
+                    <?php esc_html_e( 'Backup your database before executing bulk taxonomy switches.', 'uxpa-core-utility' ); ?>
+                </p>
+                <?php
+                break;
+
+            case 'date-updater':
+                ?>
+                <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <span class="dashicons dashicons-calendar-alt" style="vertical-align: text-bottom; margin-right: 4px;"></span>
+                    <?php esc_html_e( 'Date Updater Guide', 'uxpa-core-utility' ); ?>
+                </h3>
+                <p><strong><?php esc_html_e( 'Why randomize dates?', 'uxpa-core-utility' ); ?></strong></p>
+                <p><?php esc_html_e( 'Refreshing post updates notifies search engines (like Google) that your archive is active. Spreading the modification timestamps makes the content look organically updated.', 'uxpa-core-utility' ); ?></p>
+                <p><strong><?php esc_html_e( 'Tips:', 'uxpa-core-utility' ); ?></strong></p>
+                <ul style="list-style-type: disc; padding-left: 20px; margin: 10px 0;">
+                    <li><?php esc_html_e( 'Updating the "Modified Date" only is highly recommended. It preserves the original post publication order.', 'uxpa-core-utility' ); ?></li>
+                    <li><?php esc_html_e( 'Select a specific custom post type or category to only refresh dates for specific topics.', 'uxpa-core-utility' ); ?></li>
+                </ul>
+                <?php
+                break;
+
+            case 'shortcode-info':
+                ?>
+                <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <span class="dashicons dashicons-shortcode" style="vertical-align: text-bottom; margin-right: 4px;"></span>
+                    <?php esc_html_e( 'Shortcode List Guide', 'uxpa-core-utility' ); ?>
+                </h3>
+                <p><strong><?php esc_html_e( 'About the Shortcode:', 'uxpa-core-utility' ); ?></strong></p>
+                <p><?php esc_html_e( 'Use [taxonomy_list] to generate dynamic index layouts on pages or posts. It includes search bar filtering and column configurations.', 'uxpa-core-utility' ); ?></p>
+                <p><strong><?php esc_html_e( 'Usage Tips:', 'uxpa-core-utility' ); ?></strong></p>
+                <ul style="list-style-type: disc; padding-left: 20px; margin: 10px 0;">
+                    <li><?php esc_html_e( 'Specify count_type="post" to let users see how many posts are assigned to each term.', 'uxpa-core-utility' ); ?></li>
+                    <li><?php esc_html_e( 'Add search_bar="1" to output a live search filter box at the top of the term list.', 'uxpa-core-utility' ); ?></li>
+                </ul>
+                <?php
+                break;
+
+            case 'firewall':
+                ?>
+                <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <span class="dashicons dashicons-shield" style="vertical-align: text-bottom; margin-right: 4px;"></span>
+                    <?php esc_html_e( 'Bot Firewall Guide', 'uxpa-core-utility' ); ?>
+                </h3>
+                <p><strong><?php esc_html_e( 'What does it block?', 'uxpa-core-utility' ); ?></strong></p>
+                <p><?php esc_html_e( 'Malicious bots crawl WordPress sites scanning for ?author=N parameters to list valid user logins. Once found, they target those accounts with brute-force login attempts.', 'uxpa-core-utility' ); ?></p>
+                <p><strong><?php esc_html_e( 'Tips:', 'uxpa-core-utility' ); ?></strong></p>
+                <ul style="list-style-type: disc; padding-left: 20px; margin: 10px 0;">
+                    <li><?php esc_html_e( 'Keep this enabled for solid site hardening.', 'uxpa-core-utility' ); ?></li>
+                    <li><?php esc_html_e( 'Logged-in administrators and editors can still browse author archives without interruption.', 'uxpa-core-utility' ); ?></li>
+                </ul>
+                <?php
+                break;
+        }
     }
 }

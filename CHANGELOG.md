@@ -2,6 +2,11 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.1.2] - 2026-07-02
+
+### Added
+- Added a secondary sidebar guide column on the settings page to provide user documentation, warnings, and tips for each tab.
+
 ## [1.1.1] - 2026-07-02
 
 ### Changed

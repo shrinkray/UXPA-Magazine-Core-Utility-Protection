@@ -2,6 +2,13 @@
 
 All notable changes to the **UXPA Magazine Core Utility & Protection** plugin will be documented in this file.
 
+## [1.3.0] - 2026-07-03
+
+### Added
+- Added a Welcome settings tab introducing the utility plugin's feature highlights and security solutions.
+- Embedded a service advertisement widget for Greg Miller / Shrinkray Labs.
+- Added quick shortcut links and version metadata details inside the sidebar guide column on the Welcome tab.
+
 ## [1.2.2] - 2026-07-02
 
 ### Changed

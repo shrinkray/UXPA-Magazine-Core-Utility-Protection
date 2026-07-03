@@ -2,7 +2,7 @@
 /**
  * Plugin Name: UXPA Magazine Core Utility & Protection
  * Description: Consolidation of taxonomy/post utilities and high-efficiency firewall hooks.
- * Version: 1.2.2
+ * Version: 1.3.0
  * Author: Greg Miller for UXPA
  * Author URI: https://shrinkraylabs.com
  * Text Domain: uxpa-core-utility

@@ -159,15 +159,6 @@ class UXPA_Settings {
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 15px;">
                 <div>
                     <h4 style="margin: 0 0 6px 0; font-size: 14px;">
-                        <span class="dashicons dashicons-shield" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
-                        <?php esc_html_e( 'Early-Exit Bot Firewall', 'uxpa-core-utility' ); ?>
-                    </h4>
-                    <p style="margin: 0; font-size: 13px; color: #646970;">
-                        <?php esc_html_e( 'Blocks malicious user/author enumeration scans (?author=N) before WordPress loads heavy database tasks, protecting credentials from brute force lists.', 'uxpa-core-utility' ); ?>
-                    </p>
-                </div>
-                <div>
-                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
                         <span class="dashicons dashicons-plugins-checked" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
                         <?php esc_html_e( 'Plugin Bloat Reduction', 'uxpa-core-utility' ); ?>
                     </h4>
@@ -211,6 +202,15 @@ class UXPA_Settings {
                         <?php esc_html_e( 'Generates customized and optimized [taxonomy_list] shortcodes with live search capabilities to render beautiful term directories.', 'uxpa-core-utility' ); ?>
                     </p>
                 </div>
+				<div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-shield" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Early-Exit Bot Firewall', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Blocks malicious user/author enumeration scans (?author=N) before WordPress loads heavy database tasks, protecting credentials from brute force lists.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -222,12 +222,12 @@ class UXPA_Settings {
             <p style="font-size: 14px; line-height: 1.5; color: #2c3338; max-width: 800px; margin-bottom: 20px;">
                 <?php esc_html_e( 'This plugin was designed and developed by Greg Miller at Shrinkray Labs. We specialize in high-performance WordPress engineering, custom plugin development, backend dashboard automation, and security/database tuning.', 'uxpa-core-utility' ); ?>
             </p>
-            <p style="margin: 0;">
-                <a href="https://shrinkraylabs.com" target="_blank" class="button button-primary button-large" style="display: inline-flex; align-items: center; gap: 6px;">
-                    <span class="dashicons dashicons-external" style="font-size: 16px; width: 16px; height: 16px; line-height: 1.3;"></span>
+            <div style="margin: 0; display:flex;">
+                <a href="https://shrinkraylabs.com" target="_blank" class="button button-primary button-large" ">
+                    <span class="dashicons dashicons-external" style="font-size: 16px; width: 16px; height: 16px; line-height: 1.3; color:white; margin-bottom:0.5rem;"></span>
                     <?php esc_html_e( 'Visit Shrinkray Labs', 'uxpa-core-utility' ); ?>
                 </a>
-            </p>
+            </div>
         </div>
         <?php
     }

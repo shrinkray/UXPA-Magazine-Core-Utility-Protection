@@ -73,8 +73,9 @@ class UXPA_Settings {
      * Render settings page.
      */
     public function render_settings_page() {
-        $current_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'term-ordering';
+        $current_tab = isset( $_GET['tab'] ) ? sanitize_key( wp_unslash( $_GET['tab'] ) ) : 'welcome';
         $tabs = array(
+            'welcome'        => __( 'Welcome', 'uxpa-core-utility' ),
             'term-ordering'  => __( 'Term Ordering', 'uxpa-core-utility' ),
             'term-switcher'  => __( 'Term Switcher', 'uxpa-core-utility' ),
             'date-updater'   => __( 'Bulk Date Updater', 'uxpa-core-utility' ),
@@ -103,6 +104,9 @@ class UXPA_Settings {
                 <div class="main-settings-content" style="flex: 3; min-width: 0;">
                     <?php
                     switch ( $current_tab ) {
+                        case 'welcome':
+                            $this->render_welcome_tab();
+                            break;
                         case 'firewall':
                             $this->render_firewall_tab();
                             break;
@@ -131,6 +135,98 @@ class UXPA_Settings {
                 <div class="sidebar-settings-guide" style="flex: 1; min-width: 280px; max-width: 360px; background: #fff; border: 1px solid #ccd0d4; padding: 20px; border-radius: 4px; box-shadow: 0 1px 1px rgba(0,0,0,.04); box-sizing: border-box;">
                     <?php $this->render_sidebar_guide( $current_tab ); ?>
                 </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    /**
+     * Render Welcome settings tab.
+     */
+    private function render_welcome_tab() {
+        ?>
+        <h2><?php esc_html_e( 'Welcome to the UXPA Core Utility & Protection Suite', 'uxpa-core-utility' ); ?></h2>
+        <p class="description" style="font-size: 14px; margin-bottom: 20px;">
+            <?php esc_html_e( 'A high-performance consolidated suite designed specifically for UXPA Magazine to reduce plugin bloat and protect core operations.', 'uxpa-core-utility' ); ?>
+        </p>
+
+        <div style="background: #fff; border: 1px solid #ccd0d4; padding: 20px; border-radius: 4px; box-shadow: 0 1px 1px rgba(0,0,0,.04); margin-bottom: 30px;">
+            <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                <span class="dashicons dashicons-yes-alt" style="color: #46b450; vertical-align: text-bottom; margin-right: 6px;"></span>
+                <?php esc_html_e( 'Key Problems We Solve', 'uxpa-core-utility' ); ?>
+            </h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 15px;">
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-plugins-checked" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Plugin Bloat Reduction', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Consolidates 4 separate plugins (Bulk Date Updater, Taxonomy Terms Order, Taxonomy Switcher, and Taxonomy List) into a single optimized engine.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-editor-ol" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Advanced Taxonomy Ordering', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Gives content managers hierarchical drag-and-drop sorting capabilities over category and tag lists on the frontend.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-randomize" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Direct SQL Term Switcher', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Migrates or switches terms from one taxonomy to another in bulk via direct database-level SQL operations to minimize timeout risks.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-calendar-alt" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Organic Date Refreshing', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Randomizes and updates post creation/modification dates within a customized range, signaling content activity to search crawler engines.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-shortcode" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Dynamic Shortcode Generator', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Generates customized and optimized [taxonomy_list] shortcodes with live search capabilities to render beautiful term directories.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
+				<div>
+                    <h4 style="margin: 0 0 6px 0; font-size: 14px;">
+                        <span class="dashicons dashicons-shield" style="vertical-align: text-bottom; margin-right: 4px; color: #2271b1;"></span>
+                        <?php esc_html_e( 'Early-Exit Bot Firewall', 'uxpa-core-utility' ); ?>
+                    </h4>
+                    <p style="margin: 0; font-size: 13px; color: #646970;">
+                        <?php esc_html_e( 'Blocks malicious user/author enumeration scans (?author=N) before WordPress loads heavy database tasks, protecting credentials from brute force lists.', 'uxpa-core-utility' ); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #f0f6fc; border-left: 4px solid #72aee6; padding: 25px; border-radius: 0 4px 4px 0; box-shadow: 0 1px 2px rgba(0,0,0,.05);">
+            <h3 style="margin-top: 0; font-size: 18px; color: #1d2327;">
+                <span class="dashicons dashicons-awards" style="vertical-align: text-bottom; margin-right: 6px; color: #135e96; font-size: 24px; width: 24px; height: 24px;"></span>
+                <?php esc_html_e( 'Need Custom WordPress Solutions & Optimization?', 'uxpa-core-utility' ); ?>
+            </h3>
+            <p style="font-size: 14px; line-height: 1.5; color: #2c3338; max-width: 800px; margin-bottom: 20px;">
+                <?php esc_html_e( 'This plugin was designed and developed by Greg Miller at Shrinkray Labs. We specialize in high-performance WordPress engineering, custom plugin development, backend dashboard automation, and security/database tuning.', 'uxpa-core-utility' ); ?>
+            </p>
+            <div style="margin: 0; display:flex;">
+                <a href="https://shrinkraylabs.com" target="_blank" class="button button-primary button-large" ">
+                    <span class="dashicons dashicons-external" style="font-size: 16px; width: 16px; height: 16px; line-height: 1.3; color:white; margin-bottom:0.5rem;"></span>
+                    <?php esc_html_e( 'Visit Shrinkray Labs', 'uxpa-core-utility' ); ?>
+                </a>
             </div>
         </div>
         <?php
@@ -415,6 +511,65 @@ class UXPA_Settings {
      */
     private function render_sidebar_guide( $tab ) {
         switch ( $tab ) {
+            case 'welcome':
+                ?>
+                <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
+                    <span class="dashicons dashicons-admin-settings" style="vertical-align: text-bottom; margin-right: 4px;"></span>
+                    <?php esc_html_e( 'Plugin Metadata', 'uxpa-core-utility' ); ?>
+                </h3>
+                <table class="wp-list-table widefat fixed striped" style="border: none; background: transparent; box-shadow: none; margin-top: 10px;">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 6px 0; border: none;"><strong><?php esc_html_e( 'Version:', 'uxpa-core-utility' ); ?></strong></td>
+                            <td style="padding: 6px 0; border: none; text-align: right;">1.3.0</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 0; border: none;"><strong><?php esc_html_e( 'Developer:', 'uxpa-core-utility' ); ?></strong></td>
+                            <td style="padding: 6px 0; border: none; text-align: right;"><a href="https://shrinkraylabs.com" target="_blank">Greg Miller</a></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 6px 0; border: none;"><strong><?php esc_html_e( 'Organization:', 'uxpa-core-utility' ); ?></strong></td>
+                            <td style="padding: 6px 0; border: none; text-align: right;">UXPA Magazine</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr style="margin: 15px 0; border-top: 1px solid #eee;" />
+                <h4 style="margin: 0 0 10px 0; font-size: 14px;"><?php esc_html_e( 'Quick Shortcuts', 'uxpa-core-utility' ); ?></h4>
+                <ul style="list-style: none; padding-left: 0; margin: 0; font-size: 13px;">
+                    <li style="margin-bottom: 8px;">
+                        <a href="?page=uxpa-core-utility&tab=term-ordering" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+                            <span class="dashicons dashicons-editor-ol" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                            <?php esc_html_e( 'Term Ordering Settings', 'uxpa-core-utility' ); ?>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="?page=uxpa-core-utility&tab=term-switcher" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+                            <span class="dashicons dashicons-randomize" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                            <?php esc_html_e( 'Term Switcher Utility', 'uxpa-core-utility' ); ?>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="?page=uxpa-core-utility&tab=date-updater" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+                            <span class="dashicons dashicons-calendar-alt" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                            <?php esc_html_e( 'Bulk Date Updater', 'uxpa-core-utility' ); ?>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 8px;">
+                        <a href="?page=uxpa-core-utility&tab=shortcode-info" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+                            <span class="dashicons dashicons-shortcode" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                            <?php esc_html_e( 'Shortcode Helper Widget', 'uxpa-core-utility' ); ?>
+                        </a>
+                    </li>
+                    <li style="margin-bottom: 0;">
+                        <a href="?page=uxpa-core-utility&tab=firewall" style="text-decoration: none; display: flex; align-items: center; gap: 6px;">
+                            <span class="dashicons dashicons-shield" style="font-size: 16px; width: 16px; height: 16px;"></span>
+                            <?php esc_html_e( 'Bot Firewall Settings', 'uxpa-core-utility' ); ?>
+                        </a>
+                    </li>
+                </ul>
+                <?php
+                break;
+
             case 'term-ordering':
                 ?>
                 <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 8px;">
